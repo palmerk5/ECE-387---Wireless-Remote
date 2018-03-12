@@ -1,0 +1,50 @@
+#include <RCSwitch.h>
+
+RCSwitch mySwitch = RCSwitch();
+const int led1 = 10;
+const int led2 = 11;
+const int led3 = 12;
+const int led4 = 13;
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  Serial.begin(9600);
+  mySwitch.enableReceive(0); 
+}
+
+void loop() {
+  if (mySwitch.available()) {
+    
+    int value = mySwitch.getReceivedValue();
+    
+    if (value == 0) {
+      Serial.print("Unknown encoding");
+    } 
+    else if (value == 1111) {
+      digitalWrite(led1, HIGH);
+      Serial.println("Right");
+    }
+    else if (value == 2222) {
+      digitalWrite(led2, HIGH);
+      Serial.println("Left");
+    }
+    else if (value == 3333) {
+      digitalWrite(led3, HIGH);
+      Serial.println("Up");
+    }
+    else if (value == 4444) {
+      digitalWrite(led4, HIGH);
+      Serial.println("Down");
+    }
+    else if(value == 5555){
+      digitalWrite(led1, LOW);
+      digitalWrite(led2, LOW);
+      digitalWrite(led3, LOW);
+      digitalWrite(led4, LOW);
+    }
+
+    mySwitch.resetAvailable();
+  }
+}
